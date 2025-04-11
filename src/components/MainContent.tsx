@@ -2,7 +2,7 @@ import { PatientsTable } from "./tables/PatientsTable";
 import { DoctorsTable } from "./tables/DoctorsTable";
 import { AppointmentsTable } from "./tables/AppointmentsTable";
 import Reports from "./sections/Reports";
-import { DashboardOverview } from "./sections/DashboardOverview";
+import DashboardOverview from "./sections/DashboardOverview";
 
 interface MainContentProps {
   activeSection: string;
