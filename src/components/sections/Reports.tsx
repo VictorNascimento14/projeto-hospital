@@ -1,5 +1,3 @@
-
-import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
@@ -30,80 +28,49 @@ const appointmentsByDepartment = [
   { name: "Pediatria", value: 112 },
 ];
 
-const patientsByAge = [
-  { name: "0-18", value: 145 },
-  { name: "19-35", value: 302 },
-  { name: "36-50", value: 287 },
-  { name: "51-65", value: 256 },
-  { name: "66+", value: 173 },
-];
-
 const monthlyAppointments = [
-  { name: "Jan", consultas: 65, exames: 42 },
-  { name: "Fev", consultas: 78, exames: 51 },
-  { name: "Mar", consultas: 92, exames: 63 },
-  { name: "Abr", consultas: 87, exames: 59 },
-  { name: "Mai", consultas: 105, exames: 71 },
-  { name: "Jun", consultas: 93, exames: 65 },
-  { name: "Jul", consultas: 89, exames: 57 },
-  { name: "Ago", consultas: 97, exames: 68 },
-  { name: "Set", consultas: 110, exames: 75 },
-  { name: "Out", consultas: 98, exames: 62 },
-  { name: "Nov", consultas: 85, exames: 58 },
-  { name: "Dez", consultas: 72, exames: 49 },
+  { name: "Jan", value: 45 },
+  { name: "Fev", value: 52 },
+  { name: "Mar", value: 48 },
+  { name: "Abr", value: 60 },
+  { name: "Mai", value: 55 },
+  { name: "Jun", value: 65 },
 ];
 
-const financialData = [
-  { month: "Jan", receita: 125000, despesas: 95000 },
-  { month: "Fev", receita: 137000, despesas: 97000 },
-  { month: "Mar", receita: 145000, despesas: 102000 },
-  { month: "Abr", receita: 152000, despesas: 104000 },
-  { month: "Mai", receita: 159000, despesas: 108000 },
-  { month: "Jun", receita: 147000, despesas: 101000 },
-];
-
-// Colors for charts
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8", "#82CA9D"];
 
-export const Reports = () => {
-  const [activeTab, setActiveTab] = useState("appointments");
-
+const Reports = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-xl font-semibold">Relatórios</h2>
-          <p className="text-muted-foreground">
-            Visualize e analise os dados do hospital
-          </p>
-        </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm">
+        <h2 className="text-2xl font-bold">Relatórios</h2>
+        <div className="flex space-x-2">
+          <Button variant="outline">
             <Filter className="mr-2 h-4 w-4" />
             Filtrar
           </Button>
-          <Button variant="outline" size="sm">
+          <Button>
             <Download className="mr-2 h-4 w-4" />
             Exportar
           </Button>
         </div>
       </div>
 
-      <Tabs defaultValue="appointments" className="space-y-4" onValueChange={setActiveTab}>
+      <Tabs defaultValue="overview" className="space-y-4">
         <TabsList>
+          <TabsTrigger value="overview">Visão Geral</TabsTrigger>
           <TabsTrigger value="appointments">Consultas</TabsTrigger>
-          <TabsTrigger value="patients">Pacientes</TabsTrigger>
-          <TabsTrigger value="financial">Financeiro</TabsTrigger>
+          <TabsTrigger value="revenue">Faturamento</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="appointments" className="space-y-4">
+        <TabsContent value="overview" className="space-y-4">
           <div className="grid gap-4 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle>Consultas por Departamento</CardTitle>
+                <CardTitle>Consultas por Especialidade</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-80">
+                <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <PieChart>
                       <Pie
@@ -111,17 +78,16 @@ export const Reports = () => {
                         cx="50%"
                         cy="50%"
                         labelLine={false}
-                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
                         outerRadius={80}
                         fill="#8884d8"
                         dataKey="value"
+                        label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
                       >
                         {appointmentsByDepartment.map((entry, index) => (
                           <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                         ))}
                       </Pie>
                       <Tooltip />
-                      <Legend />
                     </PieChart>
                   </ResponsiveContainer>
                 </div>
@@ -133,25 +99,16 @@ export const Reports = () => {
                 <CardTitle>Consultas Mensais</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="h-80">
+                <div className="h-[300px]">
                   <ResponsiveContainer width="100%" height="100%">
-                    <BarChart
-                      data={monthlyAppointments}
-                      margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                      }}
-                    >
+                    <LineChart data={monthlyAppointments}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="name" />
                       <YAxis />
                       <Tooltip />
                       <Legend />
-                      <Bar dataKey="consultas" fill="#0088FE" />
-                      <Bar dataKey="exames" fill="#00C49F" />
-                    </BarChart>
+                      <Line type="monotone" dataKey="value" stroke="#8884d8" />
+                    </LineChart>
                   </ResponsiveContainer>
                 </div>
               </CardContent>
@@ -159,29 +116,21 @@ export const Reports = () => {
           </div>
         </TabsContent>
 
-        <TabsContent value="patients" className="space-y-4">
+        <TabsContent value="appointments">
           <Card>
             <CardHeader>
-              <CardTitle>Distribuição de Pacientes por Idade</CardTitle>
+              <CardTitle>Detalhes das Consultas</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-80">
+              <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={patientsByAge}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
+                  <BarChart data={appointmentsByDepartment}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="name" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="value" fill="#8884D8" />
+                    <Bar dataKey="value" fill="#8884d8" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -189,36 +138,22 @@ export const Reports = () => {
           </Card>
         </TabsContent>
 
-        <TabsContent value="financial" className="space-y-4">
+        <TabsContent value="revenue">
           <Card>
             <CardHeader>
-              <CardTitle>Relatório Financeiro</CardTitle>
+              <CardTitle>Faturamento</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="h-80">
+              <div className="h-[400px]">
                 <ResponsiveContainer width="100%" height="100%">
-                  <LineChart
-                    data={financialData}
-                    margin={{
-                      top: 5,
-                      right: 30,
-                      left: 20,
-                      bottom: 5,
-                    }}
-                  >
+                  <BarChart data={monthlyAppointments}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
+                    <XAxis dataKey="name" />
                     <YAxis />
-                    <Tooltip formatter={(value) => `R$ ${value.toLocaleString()}`} />
+                    <Tooltip />
                     <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="receita"
-                      stroke="#00C49F"
-                      activeDot={{ r: 8 }}
-                    />
-                    <Line type="monotone" dataKey="despesas" stroke="#FF8042" />
-                  </LineChart>
+                    <Bar dataKey="value" fill="#82ca9d" />
+                  </BarChart>
                 </ResponsiveContainer>
               </div>
             </CardContent>
@@ -228,3 +163,5 @@ export const Reports = () => {
     </div>
   );
 };
+
+export default Reports;

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Plus, Pencil, Trash2, Search } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 // Mock data for doctors
 const DOCTORS_DATA = [
@@ -78,172 +78,55 @@ export const DoctorsTable = () => {
   };
 
   return (
-    <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <div className="relative w-full max-w-sm">
-          <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-          <Input
-            placeholder="Buscar médicos..."
-            className="pl-8"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-sm font-medium">Médicos</CardTitle>
+        <div className="flex items-center space-x-2">
+          <div className="relative">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input placeholder="Buscar..." className="pl-8" />
+          </div>
+          <Button>Novo Médico</Button>
         </div>
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={() => setEditingDoctor(null)}>
-              <Plus className="mr-2 h-4 w-4" /> Novo Médico
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>
-                {editingDoctor ? "Editar Médico" : "Adicionar Médico"}
-              </DialogTitle>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Nome
-                </Label>
-                <Input
-                  id="name"
-                  className="col-span-3"
-                  value={editingDoctor ? editingDoctor.name : newDoctor.name}
-                  onChange={(e) => {
-                    if (editingDoctor) {
-                      setEditingDoctor({ ...editingDoctor, name: e.target.value });
-                    } else {
-                      setNewDoctor({ ...newDoctor, name: e.target.value });
-                    }
-                  }}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="specialty" className="text-right">
-                  Especialidade
-                </Label>
-                <Input
-                  id="specialty"
-                  className="col-span-3"
-                  value={editingDoctor ? editingDoctor.specialty : newDoctor.specialty}
-                  onChange={(e) => {
-                    if (editingDoctor) {
-                      setEditingDoctor({ ...editingDoctor, specialty: e.target.value });
-                    } else {
-                      setNewDoctor({ ...newDoctor, specialty: e.target.value });
-                    }
-                  }}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="crm" className="text-right">
-                  CRM
-                </Label>
-                <Input
-                  id="crm"
-                  className="col-span-3"
-                  value={editingDoctor ? editingDoctor.crm : newDoctor.crm}
-                  onChange={(e) => {
-                    if (editingDoctor) {
-                      setEditingDoctor({ ...editingDoctor, crm: e.target.value });
-                    } else {
-                      setNewDoctor({ ...newDoctor, crm: e.target.value });
-                    }
-                  }}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="contact" className="text-right">
-                  Contato
-                </Label>
-                <Input
-                  id="contact"
-                  className="col-span-3"
-                  value={editingDoctor ? editingDoctor.contact : newDoctor.contact}
-                  onChange={(e) => {
-                    if (editingDoctor) {
-                      setEditingDoctor({ ...editingDoctor, contact: e.target.value });
-                    } else {
-                      setNewDoctor({ ...newDoctor, contact: e.target.value });
-                    }
-                  }}
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="availability" className="text-right">
-                  Disponibilidade
-                </Label>
-                <Input
-                  id="availability"
-                  className="col-span-3"
-                  value={editingDoctor ? editingDoctor.availability : newDoctor.availability}
-                  onChange={(e) => {
-                    if (editingDoctor) {
-                      setEditingDoctor({ ...editingDoctor, availability: e.target.value });
-                    } else {
-                      setNewDoctor({ ...newDoctor, availability: e.target.value });
-                    }
-                  }}
-                />
-              </div>
-            </div>
-            <div className="flex justify-end">
-              <Button onClick={editingDoctor ? handleEditDoctor : handleAddDoctor}>
-                {editingDoctor ? "Salvar" : "Adicionar"}
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
-
-      <div className="data-table-container">
-        <table className="data-table">
-          <thead className="data-table-header">
-            <tr>
-              <th className="data-table-cell text-left">Nome</th>
-              <th className="data-table-cell text-left">Especialidade</th>
-              <th className="data-table-cell text-left">CRM</th>
-              <th className="data-table-cell text-left">Contato</th>
-              <th className="data-table-cell text-left">Disponibilidade</th>
-              <th className="data-table-cell text-right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredDoctors.map((doctor) => (
-              <tr key={doctor.id} className="data-table-row">
-                <td className="data-table-cell">{doctor.name}</td>
-                <td className="data-table-cell">{doctor.specialty}</td>
-                <td className="data-table-cell">{doctor.crm}</td>
-                <td className="data-table-cell">{doctor.contact}</td>
-                <td className="data-table-cell">{doctor.availability}</td>
-                <td className="data-table-cell text-right">
-                  <div className="flex justify-end gap-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => {
-                        setEditingDoctor(doctor);
-                        setIsDialogOpen(true);
-                      }}
-                    >
-                      <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-destructive"
-                      onClick={() => handleDeleteDoctor(doctor.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+      </CardHeader>
+      <CardContent>
+        <div className="rounded-md border">
+          <div className="relative w-full overflow-auto">
+            <table className="w-full caption-bottom text-sm">
+              <thead className="[&_tr]:border-b">
+                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Nome
+                  </th>
+                  <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
+                    CRM
+                  </th>
+                  <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Especialidade
+                  </th>
+                  <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Telefone
+                  </th>
+                  <th className="h-12 px-4 text-left align-middle font-medium text-muted-foreground">
+                    Ações
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="[&_tr:last-child]:border-0">
+                <tr className="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted">
+                  <td className="p-4 align-middle">Nenhum médico cadastrado</td>
+                  <td className="p-4 align-middle">-</td>
+                  <td className="p-4 align-middle">-</td>
+                  <td className="p-4 align-middle">-</td>
+                  <td className="p-4 align-middle">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
+
+export default DoctorsTable;

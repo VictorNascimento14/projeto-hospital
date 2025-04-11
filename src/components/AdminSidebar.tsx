@@ -1,4 +1,3 @@
-
 import {
   Sidebar,
   SidebarContent,
@@ -54,41 +53,29 @@ const AdminSidebar = ({ activeSection, setActiveSection }: AdminSidebarProps) =>
   ];
 
   return (
-    <>
-      <div className="block md:hidden fixed top-4 left-4 z-50">
+    <Sidebar>
+      <SidebarHeader>
         <SidebarTrigger>
-          <Menu className="h-6 w-6" />
+          <Menu size={20} />
         </SidebarTrigger>
-      </div>
-      <Sidebar className="border-r">
-        <SidebarHeader className="flex h-16 items-center border-b px-6">
-          <div className="flex items-center gap-2 font-semibold text-lg text-primary">
-            <User className="h-6 w-6" />
-            <span>Hospital Admin</span>
-          </div>
-        </SidebarHeader>
-
-        <SidebarContent>
-          <SidebarMenu>
-            {menuItems.map((item) => (
-              <SidebarMenuItem key={item.id}>
-                <SidebarMenuButton
-                  className={cn(
-                    "flex items-center gap-2 px-4 py-2 w-full",
-                    activeSection === item.id &&
-                      "bg-primary text-primary-foreground"
-                  )}
-                  onClick={() => setActiveSection(item.id)}
-                >
-                  {item.icon}
-                  <span>{item.title}</span>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-            ))}
-          </SidebarMenu>
-        </SidebarContent>
-      </Sidebar>
-    </>
+      </SidebarHeader>
+      <SidebarContent>
+        <SidebarMenu>
+          {menuItems.map((item) => (
+            <SidebarMenuItem
+              key={item.id}
+              active={activeSection === item.id}
+              onClick={() => setActiveSection(item.id)}
+            >
+              <SidebarMenuButton>
+                {item.icon}
+                <span>{item.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
+      </SidebarContent>
+    </Sidebar>
   );
 };
 

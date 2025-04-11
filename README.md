@@ -1,73 +1,75 @@
-# Welcome to your Lovable project
+# Sistema de Gerenciamento Hospitalar
 
-## Project info
+API RESTful para gerenciamento de pacientes, médicos e consultas em um hospital.
 
-**URL**: https://lovable.dev/projects/f1716909-8864-4f97-bf65-503f6a256b9f
+## Tecnologias Utilizadas
 
-## How can I edit this code?
+- Java 17
+- Spring Boot 3.2.3
+- Spring Data JPA
+- PostgreSQL
+- Lombok
+- Swagger/OpenAPI 3.0
 
-There are several ways of editing your application.
+## Requisitos
 
-**Use Lovable**
+- Java 17 ou superior
+- Maven 3.6 ou superior
+- PostgreSQL 12 ou superior
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f1716909-8864-4f97-bf65-503f6a256b9f) and start prompting.
+## Configuração do Banco de Dados
 
-Changes made via Lovable will be committed automatically to this repo.
+1. Crie um banco de dados PostgreSQL chamado `hospital_db`
+2. Configure as credenciais no arquivo `application.properties`:
+   ```properties
+   spring.datasource.username=seu_usuario
+   spring.datasource.password=sua_senha
+   ```
 
-**Use your preferred IDE**
+## Executando o Projeto
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+1. Clone o repositório
+2. Navegue até o diretório do projeto
+3. Execute o comando:
+   ```bash
+   mvn spring-boot:run
+   ```
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## Documentação da API
 
-Follow these steps:
+A documentação da API está disponível em:
+- Swagger UI: http://localhost:8080/api/swagger-ui.html
+- OpenAPI JSON: http://localhost:8080/api/api-docs
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## Endpoints Disponíveis
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Pacientes
+- `GET /api/pacientes` - Lista todos os pacientes
+- `GET /api/pacientes/{id}` - Busca um paciente por ID
+- `POST /api/pacientes` - Cria um novo paciente
+- `PUT /api/pacientes/{id}` - Atualiza um paciente
+- `DELETE /api/pacientes/{id}` - Remove um paciente
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Médicos
+- `GET /api/medicos` - Lista todos os médicos
+- `GET /api/medicos/{id}` - Busca um médico por ID
+- `POST /api/medicos` - Cria um novo médico
+- `PUT /api/medicos/{id}` - Atualiza um médico
+- `DELETE /api/medicos/{id}` - Remove um médico
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+### Consultas
+- `GET /api/consultas` - Lista todas as consultas
+- `GET /api/consultas/{id}` - Busca uma consulta por ID
+- `POST /api/consultas` - Agenda uma nova consulta
+- `PUT /api/consultas/{id}` - Atualiza uma consulta
+- `DELETE /api/consultas/{id}` - Cancela uma consulta
 
-**Edit a file directly in GitHub**
+## Validações
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/f1716909-8864-4f97-bf65-503f6a256b9f) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes it is!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+- CPF deve conter 11 dígitos numéricos
+- CRM deve conter entre 4 e 6 dígitos numéricos
+- Telefone deve conter 10 ou 11 dígitos numéricos
+- Email deve ser válido
+- Consultas só podem ser marcadas entre 9h e 17h
+- Um médico não pode ter duas consultas no mesmo horário
+- Um paciente não pode ter duas consultas com intervalo menor que 1 hora

@@ -1,63 +1,19 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    --background: 210 40% 98%;
-    --foreground: 222.2 47.4% 11.2%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-
-    --primary: 196 100% 47%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 196 30% 95%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 196 30% 90%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 196 100% 47%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 210 40% 98%;
-    --sidebar-foreground: 222.2 47.4% 11.2%;
-    --sidebar-primary: 196 100% 47%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 196 30% 90%;
-    --sidebar-accent-foreground: 222.2 47.4% 11.2%;
-    --sidebar-border: 214.3 31.8% 91.4%;
-    --sidebar-ring: 196 100% 47%;
-  }
-}
-
-@layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-gray-50 text-gray-900;
   }
 }
 
 .data-table-container {
-  @apply rounded-md border;
+  @apply rounded-md border border-gray-200;
 }
 
 .data-table {
@@ -65,7 +21,7 @@
 }
 
 .data-table-header {
-  @apply bg-muted/50 p-4;
+  @apply bg-gray-100 p-4;
 }
 
 .data-table-cell {
@@ -73,5 +29,5 @@
 }
 
 .data-table-row {
-  @apply border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted;
+  @apply border-b border-gray-200 transition-colors hover:bg-gray-50;
 }
